@@ -1,3 +1,27 @@
 <resources>
-    <string name="app_name">Fibonnaci Counter</string>
+    <string name="app_name">Fibonacci Counter</string>
+    <string name="choose_calc_method">Choose Fibonacci calculation method</string>
+    <string name="btn_calculate">Calculate</string>
+    <string name="dialog_message">Calculating...</string>
+
+    <string name="recursion_method_description">This method uses recursion
+        to calculate Fibonacci number. It is simple, but has low performance due to excessive calculations.
+    Max value is 40.</string>
+    <string name="array_method_description">This method uses array to store previously calculated values
+    and works much faster than recursion. For correct result displaying max input value is set to 92.</string>
+    <string name="binet_method_description">This method uses above formula for calculation. Dou to rounding
+    results may be imprecise. Max input value is 92.</string>
+
+
+    <string name="recursion_method_hint">Number from 0 to 40</string>
+    <string name="remembering_method_hint">Number from 0 to 92</string>
+    <string name="binet_method_hint">Number from 0 to 92</string>
+
+
+    <string-array name="spinner_values">
+        <item>Recursion method</item>
+        <item>Array method</item>
+        <item>Binet\'s formula</item>
+    </string-array>
+
 </resources>
