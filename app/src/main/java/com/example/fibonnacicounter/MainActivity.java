@@ -37,46 +37,51 @@ public class MainActivity extends AppCompatActivity {
         mMethodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        mDescriptionTxt.setText(R.string.recursion_method_description);
-                        mNumberInput.setHint(R.string.recursion_method_hint);
-                        mFormulaImg.setVisibility(View.GONE);
-                        setCurrentMethod();
-                        break;
-                    case 1:
-                        mDescriptionTxt.setText(R.string.array_method_description);
-                        mNumberInput.setHint(R.string.remembering_method_hint);
-                        mFormulaImg.setVisibility(View.GONE);
-                        setCurrentMethod();
-                        break;
-                    case 2:
-                        mDescriptionTxt.setText(R.string.binet_method_description);
-                        mNumberInput.setHint(R.string.remembering_method_hint);
-                        mFormulaImg.setVisibility(View.VISIBLE);
-                        setCurrentMethod();
-                        break;
-
-
-                }
+                onSpinnerItemSelected(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
         mCalculateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mNumberInput.getText().toString().length() > 0) {
-                    onCalculateClick();
-                } else {
-                    Toast.makeText(v.getContext(), "Please enter the number", Toast.LENGTH_SHORT).show();
-                }
+                onCalculateBtnClick(v);
             }
         });
+    }
+
+    private void onSpinnerItemSelected(int position) {
+        switch (position) {
+            case 0:
+                mDescriptionTxt.setText(R.string.recursion_method_description);
+                mNumberInput.setHint(R.string.recursion_method_hint);
+                mFormulaImg.setVisibility(View.GONE);
+                setCurrentMethod();
+                break;
+            case 1:
+                mDescriptionTxt.setText(R.string.array_method_description);
+                mNumberInput.setHint(R.string.remembering_method_hint);
+                mFormulaImg.setVisibility(View.GONE);
+                setCurrentMethod();
+                break;
+            case 2:
+                mDescriptionTxt.setText(R.string.binet_method_description);
+                mNumberInput.setHint(R.string.remembering_method_hint);
+                mFormulaImg.setVisibility(View.VISIBLE);
+                setCurrentMethod();
+                break;
+        }
+    }
+
+    private void onCalculateBtnClick(View v) {
+        if (mNumberInput.getText().toString().length() > 0) {
+            onCalculateClick();
+        } else {
+            Toast.makeText(v.getContext(), "Please enter the number", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setCurrentMethod() {
