@@ -150,20 +150,15 @@ public class MainActivity extends AppCompatActivity {
         protected Long doInBackground(Integer... integers) {
             switch (mCurrentMethod) {
                 case RECURSION:
-                    return calcRecursion(integers[0]);
+                    return MathUtils.calcRecursion(integers[0]);
                 case ARRAY:
-                    return calculateArray(integers[0]);
+                    return MathUtils.calculateArray(integers[0]);
                 case BINET:
-                    return calcBinetFormula(integers[0]);
+                    return MathUtils.calcBinetFormula(integers[0]);
 
                 default:
                     return 0l;
             }
-        }
-
-        private Long calcBinetFormula(Integer num) {
-            double phi = (1 + Math.sqrt(5)) / 2;
-            return Math.round(Math.pow(phi, num) / Math.sqrt(5));
         }
 
 
@@ -177,38 +172,8 @@ public class MainActivity extends AppCompatActivity {
             mResultTxt.setText(aLong.toString());
         }
 
-        private Long calcRecursion(int num) {
-            if (num == 0) {
-                return 0L;
-            } else if (num < 3) {
-                return 1L;
-            } else {
-                return calcRecursion(num - 1)
-                        + calcRecursion(num - 2);
-            }
-        }
 
-        private Long calculateArray(int num) {
 
-            long[] results = new long[num + 2];
 
-            for (int i = 0; i <= num; i++) {
-
-                if (i == 0) {
-                    results[i] = 0;
-                    continue;
-                }
-                if (i == 1) {
-                    results[i] = 1;
-                    continue;
-                }
-
-                results[i] = results[i - 1] + results[i - 2];
-
-            }
-
-            return results[num];
-
-        }
     }
 }
