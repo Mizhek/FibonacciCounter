@@ -9,7 +9,7 @@
     Max value is 40.</string>
     <string name="array_method_description">This method uses array to store previously calculated values
     and works much faster than recursion. For correct result displaying max input value is set to 92.</string>
-    <string name="binet_method_description">This method uses above formula for calculation. Dou to rounding
+    <string name="binet_method_description">This method uses above formula for calculation. Due to rounding
     results may be imprecise. Max input value is 92.</string>
 
 

@@ -11,20 +11,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String METHOD_RECURSION = "recursion";
-    CalculationMethods mCurrentMethod;
-    Spinner mMethodSpinner;
-    EditText mNumberInput;
-    Button mCalculateBtn;
-    TextView mDescriptionTxt;
-    TextView mResultTxt;
-    AlertDialog mAlertDialog;
-    ImageView mFormulaImg;
+    public static final String SPINNER_POSITION = "position";
+    public static final String RESULT = "result";
+    public static final String INPUT = "input";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupViews();
-        setCurrentMethod();
+        setCurrentMethod(0);
 
         mMethodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -53,25 +48,51 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    CalculationMethods mCurrentMethod;
+
+    Spinner mMethodSpinner;
+    EditText mNumberInput;
+    Button mCalculateBtn;
+    TextView mDescriptionTxt;
+    TextView mResultTxt;
+    AlertDialog mAlertDialog;
+    ImageView mFormulaImg;
+
     private void onSpinnerItemSelected(int position) {
-        switch (position) {
-            case 0:
+        setCurrentMethod(position);
+        manageViewsOnSpinnerChanged();
+    }
+
+    private void manageViewsOnSpinnerChanged() {
+        switch (mCurrentMethod) {
+            case RECURSION:
                 mDescriptionTxt.setText(R.string.recursion_method_description);
                 mNumberInput.setHint(R.string.recursion_method_hint);
                 mFormulaImg.setVisibility(View.GONE);
-                setCurrentMethod();
                 break;
-            case 1:
+            case ARRAY:
                 mDescriptionTxt.setText(R.string.array_method_description);
                 mNumberInput.setHint(R.string.remembering_method_hint);
                 mFormulaImg.setVisibility(View.GONE);
-                setCurrentMethod();
                 break;
-            case 2:
+            case FORMULA:
                 mDescriptionTxt.setText(R.string.binet_method_description);
                 mNumberInput.setHint(R.string.remembering_method_hint);
                 mFormulaImg.setVisibility(View.VISIBLE);
-                setCurrentMethod();
+                break;
+        }
+    }
+
+    private void setCurrentMethod(int position) {
+        switch (position) {
+            case 0:
+                mCurrentMethod = CalculationMethods.RECURSION;
+                break;
+            case 1:
+                mCurrentMethod = CalculationMethods.ARRAY;
+                break;
+            case 2:
+                mCurrentMethod = CalculationMethods.FORMULA;
                 break;
         }
     }
@@ -84,17 +105,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setCurrentMethod() {
-        switch (mMethodSpinner.getSelectedItemPosition()) {
-            case 0:
-                mCurrentMethod = CalculationMethods.RECURSION;
-                break;
-            case 1:
-                mCurrentMethod = CalculationMethods.ARRAY;
-                break;
-            case 2:
-                mCurrentMethod = CalculationMethods.BINET;
-                break;
+    private boolean checkInput(int inputNum) {
+        switch (mCurrentMethod) {
+            case RECURSION:
+                return inputNum <= 40;
+            case ARRAY:
+            case FORMULA:
+                return inputNum <= 92;
+            default:
+                return true;
+
         }
     }
 
@@ -107,17 +127,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkInput(int inputNum) {
-        switch (mCurrentMethod) {
-            case RECURSION:
-                return inputNum <= 40;
-            case ARRAY:
-            case BINET:
-                return inputNum <= 92;
-            default:
-                return true;
-
-        }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SPINNER_POSITION, mMethodSpinner.getSelectedItemPosition());
+        outState.putString(RESULT, mResultTxt.getText().toString());
+        outState.putString(INPUT, mNumberInput.getText().toString());
     }
 
     private void setupViews() {
@@ -130,8 +145,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mMethodSpinner.setSelection(savedInstanceState.getInt(SPINNER_POSITION));
+        mResultTxt.setText(savedInstanceState.getString(RESULT));
+        mNumberInput.setText(savedInstanceState.getString(INPUT));
+    }
 
-    enum CalculationMethods {RECURSION, ARRAY, BINET}
+    enum CalculationMethods {RECURSION, ARRAY, FORMULA}
 
     private class CalculateTask extends AsyncTask<Integer, Void, Long> {
 
@@ -153,11 +175,11 @@ public class MainActivity extends AppCompatActivity {
                     return MathUtils.calcRecursion(integers[0]);
                 case ARRAY:
                     return MathUtils.calculateArray(integers[0]);
-                case BINET:
+                case FORMULA:
                     return MathUtils.calcBinetFormula(integers[0]);
 
                 default:
-                    return 0l;
+                    return 0L;
             }
         }
 
@@ -171,8 +193,6 @@ public class MainActivity extends AppCompatActivity {
 
             mResultTxt.setText(aLong.toString());
         }
-
-
 
 
     }
