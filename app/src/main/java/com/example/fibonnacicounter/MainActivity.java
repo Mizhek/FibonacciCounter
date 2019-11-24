@@ -21,6 +21,19 @@ public class MainActivity extends AppCompatActivity {
     public static final String RESULT = "result";
     public static final String INPUT = "input";
 
+    enum CalculationMethods {RECURSION, ARRAY, FORMULA}
+
+    CalculationMethods mCurrentMethod;
+
+
+    Spinner mMethodSpinner;
+    EditText mNumberInput;
+    Button mCalculateBtn;
+    TextView mDescriptionTxt;
+    TextView mResultTxt;
+    AlertDialog mAlertDialog;
+    ImageView mFormulaImg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +61,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    CalculationMethods mCurrentMethod;
-
-    Spinner mMethodSpinner;
-    EditText mNumberInput;
-    Button mCalculateBtn;
-    TextView mDescriptionTxt;
-    TextView mResultTxt;
-    AlertDialog mAlertDialog;
-    ImageView mFormulaImg;
 
     private void onSpinnerItemSelected(int position) {
         setCurrentMethod(position);
@@ -153,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         mNumberInput.setText(savedInstanceState.getString(INPUT));
     }
 
-    enum CalculationMethods {RECURSION, ARRAY, FORMULA}
 
     private class CalculateTask extends AsyncTask<Integer, Void, Long> {
 
