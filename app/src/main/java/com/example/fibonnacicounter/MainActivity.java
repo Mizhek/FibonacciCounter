@@ -102,10 +102,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onCalculateBtnClick(View v) {
-        if (mNumberInput.getText().toString().length() > 0) {
-            onCalculateClick();
+        String input = mNumberInput.getText().toString();
+        if (input.length() > 0) {
+
+            int inputNum = Integer.parseInt(input);
+            if (checkInput(inputNum)) {
+                new CalculateTask().execute(inputNum);
+            } else {
+                Toast.makeText(this, "Wrong number", Toast.LENGTH_SHORT).show();
+            }
+
         } else {
+
             Toast.makeText(v.getContext(), "Please enter the number", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -122,14 +132,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void onCalculateClick() {
-        int inputNum = Integer.parseInt(mNumberInput.getText().toString());
-        if (checkInput(inputNum)) {
-            new CalculateTask().execute(inputNum);
-        } else {
-            Toast.makeText(this, "Wrong number", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
